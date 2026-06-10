@@ -1,0 +1,1021 @@
+You are a world-class senior React developer and creative 3D UI/UX designer. 
+Build a complete, production-ready, triple-identity portfolio website for 
+ARGHYADIP CHATTERJEE using React + Vite + TypeScript.
+
+This is NOT a standard portfolio. It is a THREE-WORLD immersive 3D experience 
+with a dramatic entry screen, each world having a completely different visual 
+language, 3D elements, and personality — all referencing the provided design 
+images.
+
+====================================================================
+👤 OWNER IDENTITY
+====================================================================
+
+Full Name: ARGHYADIP CHATTERJEE
+Three Identities:
+  1. 💻 THE BUILDER     → MCA Student, Developer, Tech Explorer
+                          (Style ref: Dark navy + orange 3D avatar portfolio)
+  2. 📷 THE OBSERVER    → Photographer, Visual Storyteller
+                          (Style ref: Dark cinematic gold photography site)
+  3. ✍️ THE NARRATOR    → Content Writer, Creative Writer, Storyteller
+                          (Style ref: Golden retro-futuristic pixel-art 
+                           content creator site)
+
+====================================================================
+📦 TECH STACK — ALL REQUIRED
+====================================================================
+
+Core:
+  - React 18 + Vite + TypeScript
+  - React Router DOM v6 (hash routing, SPA)
+  - Framer Motion — ALL animations, page transitions, hover states
+  - Three.js + @react-three/fiber + @react-three/drei — 3D in all worlds
+  - @react-spring/three — spring physics for 3D objects
+  - tsParticles (react-tsparticles) — particle backgrounds
+  - Tailwind CSS v3 — utility styling
+
+UI / Interaction:
+  - react-type-animation — typewriter effects
+  - react-intersection-observer — scroll-triggered animations
+  - react-countup — animated number counters
+  - react-hot-toast — toast notifications
+  - lucide-react — icons
+
+Contact:
+  - emailjs-com — fully working email form in all 3 worlds
+
+Fonts (Google Fonts CDN in index.html):
+  - Orbitron (Builder headings)
+  - Syne (Builder body)
+  - JetBrains Mono (Builder code labels)
+  - Playfair Display (Observer headings)
+  - Cormorant Garamond (Observer body/italic)
+  - Lora (Observer paragraphs)
+  - Press Start 2P (Narrator pixel headings — small text only)
+  - Rajdhani (Narrator subheadings)
+  - IBM Plex Mono (Narrator labels)
+
+Install command:
+  npm install framer-motion three @react-three/fiber @react-three/drei 
+  @react-spring/three react-tsparticles tsparticles react-type-animation 
+  react-intersection-observer react-countup react-hot-toast lucide-react 
+  emailjs-com tailwindcss postcss autoprefixer react-router-dom
+
+====================================================================
+🗂️ COMPLETE PROJECT STRUCTURE
+====================================================================
+
+src/
+├── components/
+│   ├── Entry/
+│   │   ├── EntryScreen.tsx          ← MAIN GATEWAY — 3-panel split
+│   │   ├── BuilderPanel.tsx         ← left panel
+│   │   ├── ObserverPanel.tsx        ← center panel
+│   │   ├── NarratorPanel.tsx        ← right panel
+│   │   └── EntryScene3D.tsx         ← Three.js 3D title scene
+│   │
+│   ├── Builder/                     ← TECH WORLD (navy + orange)
+│   │   ├── BuilderLayout.tsx
+│   │   ├── BuilderNav.tsx
+│   │   ├── BuilderHero.tsx
+│   │   ├── BuilderAbout.tsx
+│   │   ├── BuilderSkills.tsx
+│   │   ├── BuilderProjects.tsx
+│   │   ├── BuilderMCA.tsx
+│   │   ├── BuilderContact.tsx
+│   │   ├── Avatar3D.tsx             ← 3D floating tech avatar
+│   │   └── TechOrb3D.tsx            ← floating skill orbs
+│   │
+│   ├── Observer/                    ← PHOTOGRAPHY WORLD (dark + gold)
+│   │   ├── ObserverLayout.tsx
+│   │   ├── ObserverNav.tsx
+│   │   ├── ObserverHero.tsx
+│   │   ├── ObserverGallery.tsx
+│   │   ├── ObserverAbout.tsx
+│   │   ├── ObserverBlog.tsx
+│   │   ├── ObserverContact.tsx
+│   │   └── LensScene3D.tsx          ← 3D camera/lens model
+│   │
+│   ├── Narrator/                    ← CONTENT WORLD (gold + retro)
+│   │   ├── NarratorLayout.tsx
+│   │   ├── NarratorNav.tsx
+│   │   ├── NarratorHero.tsx
+│   │   ├── NarratorPortfolio.tsx
+│   │   ├── NarratorStories.tsx
+│   │   ├── NarratorSkills.tsx
+│   │   ├── NarratorContact.tsx
+│   │   └── RetroScene3D.tsx         ← 3D pixel/retro 3D elements
+│   │
+│   └── Shared/
+│       ├── WorldSwitcher.tsx        ← persistent 3-mode toggle
+│       ├── CustomCursor.tsx         ← world-aware custom cursor
+│       ├── PageTransition.tsx       ← world transition overlay
+│       ├── SectionReveal.tsx        ← scroll animation wrapper
+│       └── ContactForm.tsx          ← reusable EmailJS form
+│
+├── context/
+│   └── WorldContext.tsx             ← 'entry'|'builder'|'observer'|'narrator'
+│
+├── data/
+│   └── portfolioData.ts
+│
+├── hooks/
+│   ├── useWorld.ts
+│   └── useScrollProgress.ts
+│
+├── styles/
+│   └── globals.css
+│
+├── App.tsx
+└── main.tsx
+
+====================================================================
+🎬 SECTION 1: ENTRY SCREEN — THREE-PANEL 3D GATEWAY
+====================================================================
+
+THIS IS THE MOST CRITICAL COMPONENT. Build it with maximum craft.
+
+LAYOUT: Full viewport, three equal panels side by side (33.33% each)
+No navbar. No scroll. Pure gateway.
+
+INITIAL STATE (equal 3-way split):
+  [  BUILDER  |  OBSERVER  |  NARRATOR  ]
+    33.33%        33.33%       33.33%
+
+ON HOVER of any panel:
+  Hovered panel expands to 50%, others shrink to 25% each
+  Framer Motion: animate={{ flex: isHovered ? 2 : 0.75 }}
+  Spring transition: { type: "spring", stiffness: 180, damping: 28 }
+
+ON CLICK of any panel:
+  Clicked panel animates to flex: 1 (100% width)
+  Others animate to flex: 0, opacity: 0
+  After 700ms transition completes → setWorld() 
+  Full-screen color flash matching the world's accent color
+  Then PageTransition fades in the chosen world
+
+DIVIDER LINES between panels:
+  Left divider: gradient — top orange, bottom blue (Builder meets Observer)
+  Right divider: gradient — top gold, bottom amber (Observer meets Narrator)
+  Each 2px wide with glow animation (box-shadow pulse)
+  Small icon at center of each divider: ⚡ left, 📷 right
+
+TOP CENTER (above all panels):
+  3D floating text: "ARGHYADIP CHATTERJEE" rendered in Three.js
+  Use Text3D from @react-three/drei with a metallic material
+  Text slowly rotates on Y axis, glows
+  Beneath it: "Choose Your World" in small caps, white
+
+=== LEFT PANEL — BUILDER (reference: Image 1) ===
+
+Background:
+  - Deep navy #0f1221 to #1a2040 gradient
+  - Animated floating orange/amber geometric shapes (3D boxes, tetrahedra)
+    Use Three.js Canvas with multiple meshes rotating slowly
+  - Orange radial glow from bottom-left (CSS radial-gradient blob)
+  - tsParticles: very sparse cyan+orange dots
+
+3D Element:
+  - Mini 3D avatar figure (reference: Image 1's orange-hoodie 3D girl avatar)
+  - Build using @react-three/drei BoxGeometry shapes to create a simplified 
+    blocky 3D character silhouette in orange
+  - Floats up and down with useFrame sine wave animation
+  - Surrounded by 3D floating skill icons (small 3D boxes with face colors)
+
+Content (centered):
+  - Label: "< BUILDER />" in JetBrains Mono, orange #ff6b00
+  - H2: "THE BUILDER" in Orbitron, white, 2.5rem
+  - Tagline: "MCA Student · Developer · Problem Solver"
+  - 3 mini feature tags (orange pill badges):
+    "💻 Projects" | "⚙️ Tech Stack" | "📄 Resume"
+  - Button: "ENTER WORLD →" — dark bg, orange border, 
+    hover: fills orange, text dark, scale 1.05
+  - Bottom accent: small floating code snippets fading in/out
+
+Hover extras:
+  - Panel border glows orange
+  - 3D avatar spins faster
+  - Code rain appears subtly (green matrix chars, low opacity)
+
+=== CENTER PANEL — OBSERVER (reference: Image 2) ===
+
+Background:
+  - Near-black warm #0a0703
+  - Large cinematic blur — simulate golden-hour photo as bg 
+    (CSS: blurred radial warm gradient, very large, low opacity)
+  - Film grain SVG filter (feTurbulence, opacity 0.15)
+  - Warm bokeh: CSS radial blur circles in amber/gold
+
+3D Element:
+  - 3D camera model: built from Three.js primitives
+    - CylinderGeometry for lens barrel
+    - BoxGeometry for camera body
+    - Material: dark metallic (MeshStandardMaterial, roughness 0.3, 
+      metalness 0.9, color #222)
+    - Lens: SphereGeometry, glass-like (MeshPhysicalMaterial, 
+      transmission: 0.9, roughness 0, color #88ccff)
+  - Camera slowly rotates, golden light shines on it from above-right
+  - Floating photo cards orbit around camera (CSS 3D transforms, 
+    rotateY animation at different speeds)
+
+Content:
+  - Label: "[ CAPTURING MOMENTS ]" in Cormorant Garamond italic, gold
+  - H2: "THE OBSERVER" in Playfair Display, warm white, 2.5rem
+  - Tagline: "Photographer · Visual Storyteller"
+  - 3 mini feature tags (amber pill badges):
+    "📷 Gallery" | "🌄 Stories" | "🎬 Showreel"
+  - Button: "ENTER WORLD →" — warm dark bg, amber border,
+    hover: fills amber gold, scale 1.05
+  - Circular "AWARD WINNING PHOTOGRAPHER" rotating text (CSS 
+    animation on SVG textPath in circle shape)
+
+Hover extras:
+  - Panel border glows warm gold
+  - Camera aperture animation: ring of blades opening (CSS clip-path)
+  - Photo cards glow softly
+
+=== RIGHT PANEL — NARRATOR (reference: Image 3) ===
+
+Background:
+  - Olive-gold dark #1a1500 to #0f0d00
+  - Golden mechanical/gear shapes in corners (CSS or SVG)
+  - Retro scanlines (horizontal CSS stripes, very low opacity)
+  - Floating pixel art elements (small 8x8 pixel ghost, star shapes in CSS)
+
+3D Element:
+  - 3D retro typewriter or open book — Three.js primitives
+  - Typewriter: BoxGeometry body + small CylinderGeometry keys
+    Material: aged gold (#c9a227) + dark iron (#333)
+  - OR: Open book: two thin BoxGeometry planes angled like open pages
+    with glowing golden text particles rising from pages (Points)
+  - Floats gently, golden light underneath casting upward glow
+
+Content:
+  - Loading bar (CSS progress bar with gold fill, "LOADING..." label)
+    Reference Image 3's loading bar aesthetic
+  - Label in IBM Plex Mono: "[ CONTENT CREATOR ]" in gold
+  - H2: "THE NARRATOR" — Mix of large serif + pixelated 
+    (Reference Image 3: "Port folio" large word, mixed fonts)
+    Use: "THE" in Playfair Display + "NARRATOR" in Press Start 2P
+    but make Press Start 2P at appropriate readable size
+  - Tagline: "Writer · Blogger · Storyteller"
+  - 3 mini feature tags (gold pill badges):
+    "✍️ Stories" | "📝 Blog" | "🎨 Essays"
+  - Button: "ENTER WORLD →" — olive dark bg, gold border,
+    hover: fills gold, text dark, scale 1.05
+  - Small pixel ghost floating in corner (CSS pixel art div)
+
+Hover extras:
+  - Panel border glows gold
+  - Typewriter animation: keys press up/down (CSS translateY)
+  - Golden particles rise like sparks
+
+ENTRY SCREEN GLOBAL ANIMATIONS (on page load):
+  1. Black screen → three panels fade in simultaneously (opacity 0→1, 500ms)
+  2. Divider lines draw top to bottom (scaleY 0→1, 800ms, staggered 100ms)
+  3. Top 3D title drops in from above (y: -100 → 0, spring)
+  4. Panel content stagger-reveals (each item 150ms apart)
+  5. After 2 seconds idle: panels subtly "breathe" — 
+     scale 1.0 → 1.01 → 1.0 loop (very subtle, Framer Motion)
+
+====================================================================
+🖥️ WORLD 1: THE BUILDER — MCA Developer
+(Reference: Image 1 — Dark navy, orange accents, 3D avatar)
+====================================================================
+
+COLOR PALETTE:
+  --bg-deep:       #0d1117
+  --bg-card:       #161b27
+  --bg-elevated:   #1c2336
+  --orange:        #ff6b00
+  --orange-light:  #ff9500
+  --orange-glow:   rgba(255,107,0,0.4)
+  --cyan:          #00d4ff
+  --white:         #f0f4ff
+  --muted:         #6b7899
+  --border:        rgba(255,107,0,0.25)
+
+3D GLOBAL ELEMENTS:
+  - Background Three.js Canvas (position: fixed, z: -1):
+    10–15 slowly rotating geometric shapes (icosahedra, tori, boxes)
+    Colors: deep navy, slight orange rim lighting
+    Scale: large, very slow rotation (0.001 rad/frame)
+    Fog: dark navy fog hides far shapes
+  - PointLight: orange, positioned top-right, intensity 0.5
+  - AmbientLight: very dim blue
+
+--- BuilderNav.tsx ---
+  EXACT reference: Image 1 navbar
+  - Dark pill-shaped navbar (NOT full-width, rounded, floating)
+    Width: 80% max, centered, border-radius 50px
+    bg: rgba(22,27,39,0.9), border: 1px solid rgba(255,107,0,0.3)
+    backdrop-filter: blur(16px)
+  - Logo: "Portfolio." with dot in orange, font Orbitron
+  - Links: Home | About | Projects | Skills | Contact
+    Active: white text. Inactive: #6b7899
+  - Right: Social icon (github round button) + "Hire Me" orange pill button
+  - On scroll: shadow deepens, border glow intensifies
+  - Mobile: hamburger → fullscreen dark overlay
+
+--- BuilderHero.tsx ---
+  EXACT reference: Image 1 hero section
+  
+  Background: dark navy with orange glow from right side
+  
+  LEFT SIDE (55% width):
+    - Row of 4 social icons (Instagram, TikTok, GitHub, YouTube 
+      — or relevant ones: GitHub, LinkedIn, Twitter, LeetCode)
+      Small rounded icon buttons, dark bg, slight orange hover glow
+    - H1: "Hi, I'm Arghyadip" in Orbitron font
+      "Arghyadip" in orange, rest in white
+      Very large (clamp 2rem → 4.5rem)
+    - Bio paragraph in Syne, muted white, 3–4 lines
+    - Two CTA buttons (pill shape like Image 1):
+      "⬇ Download CV" — orange filled, dark text
+      "✉ Contact Me" — dark bg, white border
+    - Micro-animation: buttons have subtle floating shadow pulse
+  
+  RIGHT SIDE (45% width):
+    - Avatar3D.tsx: Three.js 3D character
+      Build a blocky 3D avatar in orange hoodie using Three.js primitives:
+        Head: SphereGeometry or BoxGeometry, skin tone material
+        Body: BoxGeometry, orange (#ff6b00) hoodie material
+        Arms, legs: CylinderGeometry or BoxGeometry
+        Hair: BoxGeometry cluster, dark brown
+        Glasses: torus geometry, dark
+      All parts as a Group, floats up/down (useFrame sine wave)
+      Rotates slightly on Y axis continuously
+      PointLight from front-right: warm white
+    - Floating around avatar: 3D skill icons
+      Small BoxGeometry cubes, each face colored with skill brand color
+      (React blue, JS yellow, Python blue, etc.)
+      Orbit around avatar at different speeds (useFrame + Math.sin/cos)
+    - Floating social app icons: AI logo, Pr logo badges 
+      (like Image 1) — CSS 3D perspective-rotated badge divs
+
+  Background glows: 2 large CSS radial-gradient blobs
+    One orange (right side), one blue (left side), both blurred 150px
+
+--- BuilderAbout.tsx ---
+  EXACT reference: Image 1 bottom-left "About Me" card
+  
+  2-column card layout:
+  LEFT CARD (dark bg, orange accent corners):
+    - 3D "About" illustration: same avatar style but smaller, 
+      surrounded by React/JS/code 3D icons floating
+    - Orange star shape behind avatar (CSS clip-path: polygon star)
+    - Stats row: "5+" Education | "10+" Years Experience | "100+" Projects
+      (use CountUp animation when in view)
+    - "Learn More" orange pill button
+  
+  RIGHT area: text content
+    - "About Me" heading with orange "Me" 
+    - Bio paragraphs
+    - "What I Do" mini-cards: 4 cards in 2x2 grid
+      Each: icon + title, dark card, orange top border
+
+--- BuilderSkills.tsx ---
+  EXACT reference: Image 1 "My Skills" card (bottom-right)
+  
+  Grid of skill cards (4 columns):
+  Each card (dark #161b27 bg):
+    - Left: skill icon (colored PNG or SVG)
+    - Right: skill name + "Proficiency" label + orange progress bar
+    - Progress bar animated from 0% on scroll enter
+    - Card: hover → border glows orange, slight scale up
+  
+  Skills to include (with realistic percentages):
+    Frontend: React (88%), Vue (82%), Tailwind CSS (92%), Framer Motion (78%)
+    Backend: Node.js (80%), Firebase (75%), Python (72%)
+    Tools: Vite (85%), Git (90%), Figma (70%)
+  
+  Tab switcher above grid: [Frontend] [Backend] [Tools] [Languages]
+  
+  3D enhancement: above the grid, a floating 3D bar chart
+    Use Three.js BoxGeometry bars, different heights per skill category
+    Orange material with cyan trim, slowly animates bars up on enter
+
+--- BuilderProjects.tsx ---
+  EXACT reference: Image 1 "My Projects" section (bottom-left)
+  
+  Section header: "My Projects" with "Projects" in orange
+  Subtitle: "A showcase of my recent work"
+  
+  3x2 project grid (matching Image 1 layout exactly):
+  Each project card (dark card, subtle orange top border):
+    - Project screenshot/preview image (top, full width of card)
+    - Project name in Orbitron, small
+    - 1-line description in Syne
+    - Tech tag pills: small rounded orange/dark tags for each technology
+    - Two icon buttons: 💻 Code (github) + 🔗 Live (orange)
+    - Hover: card lifts with box-shadow glow orange, image overlay 
+      with "View Project" button
+  
+  Projects data:
+    1. E-Commerce Platform — React, Node, MongoDB
+    2. Fitness Tracker App — React Native, Firebase
+    3. AI Content Generator — Python, OpenAI API, React
+    4. Crypto Dashboard — React, Chart.js, Web3
+    5. Task Management System — React, Express, PostgreSQL
+    6. Real Estate Platform — Next.js, Prisma, Tailwind
+  
+  Filter bar: [All] [Web] [Mobile] [AI/ML] [Open Source]
+
+--- BuilderMCA.tsx ---
+  "My MCA Journey" — timeline section
+  Vertical glowing timeline (orange dots, orange line)
+  Each entry: Semester/Year + subjects + key project built
+  Alternating left/right, animate in on scroll
+
+--- BuilderContact.tsx ---
+  EXACT reference: Image 1 "Get In Touch" section (bottom-right)
+  
+  2-column layout:
+  LEFT: 3D avatar figure (same as hero, smaller) holding a phone
+    with animated message bubbles floating up (CSS keyframe)
+    Orange glow underneath
+  
+  RIGHT: Contact form
+    - Heading: "Get In Touch" with "Touch" in orange
+    - Subtext: "Let's discuss your project"
+    - Form fields in 2x2 grid (matching Image 1):
+      [First Name]  [Last Name]
+      [Email Address          ]
+      [Phone Number           ]
+      [Your Message (textarea)]
+      [Send Message — full width orange button]
+    - Field style: dark bg #0d1117, orange bottom-border only,
+      focus: orange glow
+    - Button: orange gradient, pill shape, hover: scale + glow
+    - FULLY WORKING with EmailJS (see integration spec)
+  
+  Footer below:
+    - "Portfolio." logo
+    - "Full Stack Thinker & UI/UX Designer"
+    - Social icons row
+    - "© 2025 Made with ♥ by me"
+
+====================================================================
+📷 WORLD 2: THE OBSERVER — Photographer
+(Reference: Image 2 — Dark cinematic, gold/amber, photography)
+====================================================================
+
+COLOR PALETTE:
+  --bg-base:       #0a0703
+  --bg-warm:       #120e08
+  --bg-card:       #1a1409
+  --gold:          #c9a227
+  --gold-light:    #f0c040
+  --amber:         #d4783a
+  --text-warm:     #f5ede0
+  --text-muted:    #8a7560
+  --border-warm:   rgba(201,162,39,0.3)
+
+3D GLOBAL ELEMENTS:
+  - LensScene3D.tsx: floating 3D camera on hero (see entry screen spec)
+  - Background: NO particle system — instead use CSS blur layers:
+    Multiple large div elements, absolute positioned, 
+    blurred (filter: blur(80px)), in warm amber/sienna colors
+    Creating a painterly warm-dark atmosphere
+  - Film grain via SVG feTurbulence filter on root (opacity 0.1)
+
+--- ObserverNav.tsx ---
+  EXACT reference: Image 2 navbar
+  
+  - Transparent, no background until scroll
+  - LEFT: Camera icon + "SHUTTER STORIES" → Replace with:
+    Camera icon + "ARGHYADIP" in Playfair Display italic
+  - CENTER: HOME (with gold underline = active) | ABOUT | PORTFOLIO ▾ | BLOG | CONTACT
+    Font: Cormorant Garamond small caps
+    Hover: gold underline slides in
+  - RIGHT: "LET'S WORK TOGETHER" outlined rounded button, 
+    gold border, gold text, hover: fills gold
+  - On scroll: bg becomes rgba(10,7,3,0.85) with blur
+
+--- ObserverHero.tsx ---
+  EXACT reference: Image 2 hero section
+  
+  Full-height (100vh) cinematic section
+  
+  Background:
+    - Large simulated photography backdrop:
+      CSS: radial-gradient from warm amber-sienna center to dark edges
+      Multiple layered gradients creating depth
+      Heavy grain filter
+      Dark vignette (radial-gradient overlay)
+    - LensScene3D in upper-right: 3D camera rotating slowly
+      with golden key light, dramatic shadows
+  
+  Content (LEFT SIDE):
+    - Small label: "CAPTURING MOMENTS" in Cormorant Garamond, 
+      uppercase, letter-spacing 4px, gold color, small
+    - H1: "Stories Through" (line 1)
+           "My Lens" (line 2)
+      Playfair Display, 4.5rem–6rem, warm white
+      Animate: each word fades up staggered
+    - Paragraph: "Professional photography services for people, 
+      places and moments that matter."
+    - Two CTA buttons (matching Image 2):
+      "VIEW PORTFOLIO" — gold filled, rounded
+      "▶ WATCH SHOWREEL" — text + play circle icon, minimal
+    - Social row: Instagram | Facebook | Twitter | 500px icons
+  
+  BOTTOM RIGHT floating badge (matching Image 2):
+    - Circular rotating text badge: "AWARD WINNING • PHOTOGRAPHER •"
+      SVG textPath on circle, rotates clockwise (CSS animation)
+    - Center: camera icon
+    - Gold color
+
+--- ObserverGallery.tsx ---
+  EXACT reference: Image 2 photo gallery section
+  
+  Filter tabs (matching Image 2 style exactly):
+    ALL | LANDSCAPE | PORTRAIT | WILDLIFE | TRAVEL | STREET | COMMERCIAL
+    Active tab: gold underline, white text
+    Font: Cormorant Garamond caps
+  
+  Photo grid (EXACT Image 2 masonry layout):
+    Row 1: [wide landscape] [portrait tall] [mountain waterfall]
+    Row 2: [city street wide] [camera still + zebra 2-col] [waterfall wide]
+    Each cell: fills its grid area, object-fit cover
+    
+    Implementation: CSS grid with named areas for the exact 
+    Image 2 bento-style layout:
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto;
+    Some photos span 2 columns or 2 rows
+  
+  Use warm gradient placeholder images (CSS linear-gradient 
+  in sienna/amber/gold tones simulating actual photography)
+  
+  Each photo hover:
+    - Dark overlay fades in
+    - Title + category appear in center (Playfair Display)
+    - Scale 1.03 (Framer Motion)
+    - Cursor changes to aperture shape
+  
+  3D enhancement: 3D photo frames hover effect
+    On hover, photo card does a slight 3D tilt (CSS perspective + 
+    rotateX/Y based on mouse position, max ±8 degrees)
+
+--- ObserverAbout.tsx ---
+  2-column:
+  LEFT: Profile photo in circular frame, gold ring border, 
+    subtle warm outer glow
+    Signature below in cursive font (CSS @font-face or Pacifico font)
+  RIGHT:
+    - "ABOUT ME" small label gold
+    - H2 in Playfair Display
+    - Bio paragraphs
+    - Quote block: decorative gold quote marks, italic Cormorant Garamond
+    - Stats: X photos taken | X countries | X years shooting
+    - "READ MORE" gold outlined button
+
+--- ObserverBlog.tsx ---
+  Magazine layout (reference Image 2 bottom section):
+  - "PHOTOGRAPHY WEBSITE DESIGN" large editorial text left side
+  - Right side: 3 phone mockups (CSS div styled as phones showing 
+    different gallery views — matching Image 2 phone mockups)
+  - Below: blog post grid — 3 columns
+    Each post: warm gradient thumbnail + gold category tag + 
+    date + title + excerpt
+
+--- ObserverContact.tsx ---
+  - "LET'S TELL A STORY TOGETHER" in Playfair Display
+  - LEFT: personal message styled like a letter,
+    signed with name in italic gold
+  - RIGHT: form with warm styling (amber focus glow, 
+    bottom-border only inputs)
+  - FULLY WORKING EmailJS
+
+====================================================================
+✍️ WORLD 3: THE NARRATOR — Content Writer
+(Reference: Image 3 — Golden olive retro, pixel art, content creator)
+====================================================================
+
+COLOR PALETTE:
+  --bg-dark:       #0f0d00
+  --bg-olive:      #1a1800
+  --bg-card:       #2a2500
+  --gold-main:     #c9a227
+  --gold-bright:   #f5c842
+  --gold-muted:    #8a7520
+  --olive:         #4a4200
+  --text-light:    #f5f0d0
+  --text-muted:    #9a8f60
+  --border-gold:   rgba(201,162,39,0.4)
+
+3D GLOBAL ELEMENTS:
+  - RetroScene3D.tsx: floating 3D typewriter (hero)
+  - Background: olive-dark with golden mechanical gear shapes
+    Large CSS-drawn gears (border-radius tricks + rotation animation)
+    Positioned in corners/edges, semi-transparent gold
+  - Retro scanlines: repeating-linear-gradient horizontal stripes, 
+    opacity 0.04
+
+--- NarratorNav.tsx ---
+  EXACT reference: Image 3 navbar
+  
+  - Minimal dark nav with rounded pill corners (Image 3 style)
+  - Logo: golden square icon (4-line grid or quill icon) + name
+  - Links: Portfolio | Stories | Kanoen (→ rename: Portfolio | Stories | Blog)
+  - Retro font: IBM Plex Mono for nav links
+  - Active: gold text, inactive: muted
+
+--- NarratorHero.tsx ---
+  EXACT reference: Image 3 hero — VERY specific implementation
+  
+  Background: dark olive with golden corner mechanical brackets
+    (Image 3's rounded rectangle corner accent shapes in gold)
+  
+  TOP SECTION (inside a rounded dark rectangle card — Image 3 style):
+    - Top: two dark pill elements side by side (nav-like pills from Image 3)
+    - Profile area:
+      LEFT: loading bar ("LOADING ██████░░░░") — CSS animated progress
+      CENTER: silhouette/avatar placeholder circle
+      RIGHT: greeting text box (rounded dark card):
+        "Ini kanoen gess → Hello there!"
+        "Salam kenal → Nice to meet you"
+        Replace with: "Hello there!" / "Nice to meet you!"
+    - LARGE TITLE in mixed fonts (exact Image 3 "Portfolio" style):
+      "ARGA" in Cormorant Garamond huge (~8rem), very thin weight
+      "DIPA" overlapping slightly in IBM Plex Mono condensed
+      Create this mixed typographic collage effect
+      Subtext: "Edc desi9n 2025 ←" → Replace: "Content · Stories · 2025 →"
+    - Bio paragraph text box (dark rounded card)
+    - Name tag pill: "ARGHYADIP CHATTERJEE | Content Creator"
+      Gold bg, dark text, centered, pill shape (Image 3 reference)
+  
+  MIDDLE ROW (3 icon buttons like Image 3):
+    - Heart icon button | $ dollar/value icon | Share icon
+    → Replace: ✍️ Write | 📖 Read | 🔗 Share
+    Dark rounded square buttons with gold icon glow
+  
+  3D Element (RetroScene3D.tsx):
+    - Floating 3D typewriter above/beside the text
+    - Three.js: BoxGeometry body (gold colored, MeshStandardMaterial 
+      metalness:0.7, roughness:0.5)
+    - Key rows: small BoxGeometry cubes in grid pattern on top
+    - Paper roll: CylinderGeometry at top, white color
+    - Floats gently, golden spotlight from above
+
+--- NarratorPortfolio.tsx ---
+  EXACT reference: Image 3 "Design Grafis" / portfolio section
+  
+  Section header in pixel-retro style:
+    "Spall - Spill pengalaman" → "From My Desk:"
+    "DESIGN GRAFIS" → "CONTENT PORTFOLIO" in Press Start 2P (small!)
+    Dark rounded card bg
+  
+  Content experience list (Image 3 left-side list style):
+    Bullet list of writing experience, publications, platforms:
+    - Content Writer at [Platform] (Month Year - Present)
+    - Blog Contributor at [Publication]
+    - Short Story Published in [Magazine]
+    etc. (use realistic placeholder data)
+    
+    RIGHT: dark rounded card: "Astral in Here" → "Featured Here"
+    showing featured publication/platform logo placeholder
+
+  CAROUSEL of writing samples (Image 3 bottom carousel):
+    Reference: Image 3's phone cards carousel with prev/next arrows
+    Horizontal scrolling cards, each card:
+      - Simulated article/story cover (gradient placeholder)
+      - Article title
+      - Published date
+    Prev/next arrow buttons (gold outline circle arrows like Image 3)
+    Active card: centered, slightly larger
+    Inactive: slightly smaller, less opacity
+
+--- NarratorStories.tsx ---
+  Stories list — editorial style:
+  Large story numbers, title in Cormorant Garamond, excerpt, tags
+  Alternating indented layout
+  Gold accent lines
+
+--- NarratorSkills.tsx ---
+  EXACT reference: Image 3 bottom tool icons row
+  
+  Section: "Tools of the Trade" (matching Image 3's tool icons at bottom)
+  Row of tool icons in dark pill/rounded cards:
+    CapCut | Notion | Canva | WordPress | Lightroom | Grammarly
+    (replace Image 3 tools with writing/content tools)
+  Each icon: dark rounded square, colored icon, gold glow on hover
+  
+  Above: skill descriptions in Rajdhani font
+    Writing: 95% | Research: 90% | Editing: 88% | SEO: 80%
+    Animated gold progress bars on scroll enter
+
+--- NarratorContact.tsx ---
+  Inside a large rounded dark card (Image 3 overall card aesthetic)
+  - Gold typewriter ASCII art or decorative header
+  - "Let's Write Something Together" in mixed fonts
+  - Contact info in IBM Plex Mono
+  - Form: gold border inputs, pixel-style submit button
+  - FULLY WORKING EmailJS
+
+====================================================================
+🔄 WORLD SWITCHER (WorldSwitcher.tsx)
+====================================================================
+
+POSITION: Fixed, bottom-center on all worlds. z-index: 9999.
+
+DESIGN (3-section pill, matching the 3-world concept):
+  ┌─────────────────────────────────────────┐
+  │  💻 Builder  │  📷 Observer  │ ✍️ Narrator │
+  └─────────────────────────────────────────┘
+  
+  - Dark pill container with rounded ends
+  - Each section: icon + name, separated by thin vertical dividers
+  - Active section: glows with its world's accent color, 
+    slight scale-up text
+  - Inactive: muted gray
+  - Hover: section illuminates
+
+  TRANSITION between worlds:
+    1. Framer AnimatePresence
+    2. Current world: scale 0.96 + opacity 0 + blur 8px (300ms)
+    3. Flash: full-screen 200ms flash of the new world's color
+    4. New world: slides in from correct direction:
+       Builder→Observer: slide from right
+       Observer→Narrator: slide from right
+       Narrator→Builder: slide from left
+    5. Spring easing, 500ms total
+
+RETURN TO ENTRY:
+  Small "⊕ HOME" link at TOP of WorldSwitcher pill
+  Returns to EntryScreen (setWorld('entry'))
+
+====================================================================
+🖱️ CUSTOM CURSOR (CustomCursor.tsx)
+====================================================================
+
+THREE different cursors, changes per world:
+
+BUILDER world:
+  - 8px cyan dot + 32px dark ring with orange border
+  - Hover clickable: ring becomes orange filled (50% opacity), grows to 48px
+  - Hover code/text: ring transforms into blinking cursor shape
+
+OBSERVER world:
+  - 6px warm white dot + 30px ring with gold border
+  - Hover images: ring becomes camera aperture (CSS clip-path: 
+    polygon with 8 points, slight rotation animation)
+  - Hover links: ring shrinks, gold underline extends from it
+
+NARRATOR world:
+  - 8px gold dot + 28px ring with olive/gold border
+  - Hover text: ring becomes a small quill pen shape (CSS)
+  - Hover buttons: ring pixelates edges (CSS clip-path steps)
+
+All: body { cursor: none } on desktop. Disable mobile.
+
+====================================================================
+📬 EMAILJS — FULLY WORKING (All 3 Contact Forms)
+====================================================================
+
+Install: npm install emailjs-com
+Import: import emailjs from 'emailjs-com'
+
+.env file:
+  VITE_EMAILJS_SERVICE_ID=your_service_id
+  VITE_EMAILJS_TEMPLATE_ID=your_template_id
+  VITE_EMAILJS_PUBLIC_KEY=your_public_key
+
+ContactForm.tsx (shared component, receives worldTheme prop):
+  - worldTheme: 'builder' | 'observer' | 'narrator'
+  - Renders different CSS classes based on theme
+  - Same logic, different visual skin
+
+Form state:
+  const [status, setStatus] = useState<'idle'|'sending'|'success'|'error'>()
+  const form = useRef<HTMLFormElement>(null)
+  
+  Validation before send:
+    - All fields required (inline red/orange error messages)
+    - Valid email regex
+    - Message min 20 characters
+
+  On submit:
+    setStatus('sending')
+    emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current!, PUBLIC_KEY)
+      .then(() => { setStatus('success'); toast.success(...); form.reset() })
+      .catch(() => { setStatus('error'); toast.error(...) })
+  
+  Button states per world:
+    BUILDER: "SEND MESSAGE →" | "SENDING..." (spinner) | "SENT! ✓" (green)
+    OBSERVER: "SEND →" (gold) | loading... | "DELIVERED ✓"
+    NARRATOR: "> SUBMIT_MESSAGE" (pixel style) | processing... | "SENT ✓"
+
+====================================================================
+📱 RESPONSIVE DESIGN
+====================================================================
+
+ENTRY SCREEN mobile (< 768px):
+  - Vertical stack: 3 panels top-to-bottom (each ~33.33vh)
+  - Tap to expand: tapped panel grows to 50vh, others shrink to 25vh
+  - 3D elements simplified: CSS gradient blobs instead of Three.js canvas
+  - Panel dividers: horizontal lines instead of vertical
+
+BUILDER mobile:
+  - Floating nav pill collapses to hamburger
+  - Hero: single column, avatar scales to 60% below text
+  - 3D skill orbs: hidden, replaced by static grid
+  - Projects: 1-column, scrollable
+  - Contact form: single column fields
+
+OBSERVER mobile:
+  - Hero: text stacks over image bg
+  - Gallery: 2-column, then 1-column on xs
+  - 3D camera: hidden
+  - Rotating badge: stays (small)
+
+NARRATOR mobile:
+  - Large hero title scales down (clamp)
+  - Portfolio carousel: horizontally swipeable
+  - Tool icons: 2-row wrap grid
+
+WorldSwitcher mobile: bottom-center, smaller pill, icons only (no text)
+
+====================================================================
+📁 DATA FILE (src/data/portfolioData.ts)
+====================================================================
+
+// ── SHARED ──────────────────────────────────────────────
+export const owner = {
+  fullName: "ARGHYADIP CHATTERJEE",
+  initials: "AC",
+  email: "arghyadip@email.com",
+  phone: "+91 XXXXX XXXXX",
+  location: "West Bengal, India",
+  resumeUrl: "/resume.pdf",
+  socials: {
+    github: "https://github.com/arghyadip",
+    linkedin: "https://linkedin.com/in/arghyadip",
+    instagram: "",
+    twitter: ""
+  }
+}
+
+// ── BUILDER DATA ─────────────────────────────────────────
+export const skills = [
+  { name: "React", category: "Frontend", level: 88, color: "#61dafb" },
+  { name: "TypeScript", category: "Frontend", level: 82, color: "#3178c6" },
+  { name: "Tailwind CSS", category: "Frontend", level: 92, color: "#38bdf8" },
+  { name: "Vue.js", category: "Frontend", level: 75, color: "#42b883" },
+  { name: "Framer Motion", category: "Frontend", level: 78, color: "#ff0055" },
+  { name: "Node.js", category: "Backend", level: 80, color: "#68a063" },
+  { name: "Firebase", category: "Backend", level: 75, color: "#ffa611" },
+  { name: "Python", category: "Backend", level: 72, color: "#ffd43b" },
+  { name: "MongoDB", category: "Backend", level: 70, color: "#4db33d" },
+  { name: "Vite", category: "Tools", level: 85, color: "#646cff" },
+  { name: "Git", category: "Tools", level: 90, color: "#f54d27" },
+  { name: "Figma", category: "Tools", level: 70, color: "#f24e1e" },
+]
+
+export const projects = [
+  { 
+    title: "E-Commerce Platform", 
+    description: "Full-featured store with payment integration",
+    tech: ["React", "Node", "MongoDB"],
+    github: "#", live: "#",
+    category: "Web"
+  },
+  { title: "Fitness Tracker App", description: "...", tech: [...], ... },
+  { title: "AI Content Generator", description: "...", tech: [...], ... },
+  { title: "Crypto Dashboard", description: "...", tech: [...], ... },
+  { title: "Task Management", description: "...", tech: [...], ... },
+  { title: "Real Estate Platform", description: "...", tech: [...], ... },
+]
+
+export const mcaJourney = [
+  { period: "1st Year, 2023", title: "Foundations", highlights: [...] },
+  { period: "2nd Year, 2024", title: "Specialization", highlights: [...] },
+  { period: "3rd Year, 2025", title: "Mastery", highlights: [...] },
+]
+
+export const certifications = [
+  { name: "...", issuer: "...", year: 2024, credentialUrl: "#" },
+]
+
+// ── OBSERVER DATA ─────────────────────────────────────────
+export const photographs = [
+  { title: "Mountain at Dusk", category: "Landscape", 
+    gradient: "linear-gradient(135deg, #2c1810, #8b4513, #d4783a)", 
+    span: "col-span-2" },
+  { title: "Golden Portrait", category: "Portrait", 
+    gradient: "linear-gradient(180deg, #1a0f05, #8b6914, #d4a017)" },
+  // ... 8+ entries covering all categories
+]
+
+export const blogPosts = [
+  { title: "...", excerpt: "...", category: "Photography", date: "2025-03-10", readTime: 5 },
+]
+
+// ── NARRATOR DATA ─────────────────────────────────────────
+export const writingWork = [
+  { title: "Content Writer", platform: "Medium", period: "2023 - Present" },
+  { title: "Technical Blogger", platform: "Dev.to", period: "2022 - Present" },
+  { title: "Short Story Author", platform: "Self-published", period: "2021 - Present" },
+]
+
+export const stories = [
+  { title: "The Last Algorithm", genre: "Sci-Fi", 
+    excerpt: "A world where code dreams...", readTime: 8, slug: "last-algorithm" },
+  // ... more stories
+]
+
+export const contentTools = [
+  { name: "Notion", icon: "N", color: "#fff" },
+  { name: "WordPress", icon: "W", color: "#21759b" },
+  { name: "Canva", icon: "C", color: "#00c4cc" },
+  { name: "Grammarly", icon: "G", color: "#15c39a" },
+  { name: "Lightroom", icon: "Lr", color: "#001e36" },
+  { name: "Capcut", icon: "CC", color: "#000" },
+]
+
+====================================================================
+⚙️ TAILWIND CONFIG (tailwind.config.ts)
+====================================================================
+
+module.exports = {
+  content: ["./src/**/*.{ts,tsx}"],
+  theme: {
+    extend: {
+      colors: {
+        builder: { bg: '#0d1117', orange: '#ff6b00', cyan: '#00d4ff' },
+        observer: { bg: '#0a0703', gold: '#c9a227', amber: '#d4783a' },
+        narrator: { bg: '#0f0d00', gold: '#c9a227', olive: '#4a4200' },
+      },
+      fontFamily: {
+        orbitron: ['Orbitron', 'sans-serif'],
+        syne: ['Syne', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+        playfair: ['Playfair Display', 'serif'],
+        cormorant: ['Cormorant Garamond', 'serif'],
+        lora: ['Lora', 'serif'],
+        pixel: ['"Press Start 2P"', 'monospace'],
+        rajdhani: ['Rajdhani', 'sans-serif'],
+        ibm: ['"IBM Plex Mono"', 'monospace'],
+      },
+      animation: {
+        'float': 'float 4s ease-in-out infinite',
+        'grain': 'grain 8s steps(10) infinite',
+        'glow-pulse': 'glowPulse 2s ease-in-out infinite alternate',
+        'rotate-slow': 'rotateSlow 20s linear infinite',
+        'scanline': 'scanline 4s linear infinite',
+      },
+      keyframes: {
+        float: { '0%,100%': {transform:'translateY(0)'}, '50%': {transform:'translateY(-12px)'} },
+        grain: { '0%,100%': {transform:'translate(0,0)'}, '50%': {transform:'translate(-3%,-3%)'} },
+        glowPulse: { from:{boxShadow:'0 0 10px var(--glow-color)'}, to:{boxShadow:'0 0 30px var(--glow-color)'} },
+        rotateSlow: { from:{transform:'rotate(0deg)'}, to:{transform:'rotate(360deg)'} },
+        scanline: { from:{backgroundPosition:'0 0'}, to:{backgroundPosition:'0 100%'} },
+      }
+    }
+  }
+}
+
+====================================================================
+🌐 GLOBALS.CSS
+====================================================================
+
+Include:
+  - CSS custom properties for each world's colors (scoped to body[data-world])
+  - Three scrollbar styles: orange (builder), gold (observer), 
+    olive-gold (narrator)
+  - ::selection highlight per world
+  - Film grain SVG filter definition
+  - Scanline background definition  
+  - smooth scroll behavior
+  - Custom scrollbar for each world:
+    body[data-world="builder"] ::-webkit-scrollbar-thumb { background: #ff6b00 }
+    body[data-world="observer"] ::-webkit-scrollbar-thumb { background: #c9a227 }
+    body[data-world="narrator"] ::-webkit-scrollbar-thumb { background: #c9a227 }
+
+====================================================================
+✅ FINAL GENERATION CHECKLIST
+====================================================================
+
+1. Generate EVERY file completely. No placeholders, no TODOs.
+2. portfolioData.ts: rich realistic data, not empty arrays.
+3. TypeScript: all components properly typed, no 'any' types.
+4. EntryScreen.tsx is the crown jewel — spend maximum detail.
+5. Each world MUST look like a completely different website:
+   Builder = dark navy + orange + 3D tech avatar (Image 1 reference)
+   Observer = dark cinematic + gold + camera 3D (Image 2 reference)
+   Narrator = olive gold + retro pixel + typewriter 3D (Image 3 reference)
+6. Three.js elements in every world — not optional.
+7. Contact forms: ALL THREE fully working with EmailJS.
+8. WorldSwitcher: 3-section pill, smooth transitions with color flash.
+9. Custom cursor: 3 different behaviors per world.
+10. Responsive: entry screen stacks vertically on mobile.
+11. Body gets data-world attribute for CSS scoping.
+12. app scrollbar, selection, cursor all change per world.
+13. Google Fonts: ALL 9 fonts loaded in index.html.
+14. README.md: setup guide + EmailJS config + how to add content.
+15. The visitor should feel they've entered THREE different people's 
+    universes — each with a distinct soul, atmosphere, and heartbeat.
+
+The final experience must make any visitor say: 
+"I've never seen anything like this before."
