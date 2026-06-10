@@ -20,7 +20,7 @@ export function NarratorHero() {
       
       {/* 3D Scene Background wrapper (on the right) */}
       <div className="absolute top-32 right-0 w-full md:w-1/2 h-[400px] z-10 pointer-events-none opacity-50 md:opacity-100">
-        <Canvas camera={{ position: [0, 2, 5], fov: 40 }}>
+        <Canvas dpr={[1, 1.5]} camera={{ position: [0, 2, 5], fov: 40 }}>
           <ambientLight intensity={0.5} />
           <spotLight position={[5, 10, 5]} angle={0.3} penumbra={1} intensity={2} color="#c9a227" />
           <Environment preset="warehouse" />

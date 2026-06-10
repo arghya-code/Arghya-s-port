@@ -50,7 +50,7 @@ function TitleText() {
 export function EntryScene3D() {
   return (
     <div className="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-4xl h-48 z-50 pointer-events-none">
-      <Canvas camera={{ position: [0, 0, 8], fov: 40 }}>
+      <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 8], fov: 40 }}>
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 10, 5]} intensity={1} />
         <directionalLight position={[-10, -10, -5]} intensity={0.5} color="#ff6b00" />

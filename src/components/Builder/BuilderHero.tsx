@@ -5,10 +5,13 @@ import { Environment } from '@react-three/drei';
 import { Github, Linkedin, Twitter, Download, Mail, Terminal } from 'lucide-react';
 import { owner } from '../../data/portfolioData';
 import { Avatar3D, TechOrb3D } from './Avatar3D';
+import { useInView } from 'react-intersection-observer';
 
 export function BuilderHero() {
+  const { ref, inView } = useInView({ triggerOnce: false, threshold: 0.1 });
+
   return (
-    <section id="home" className="min-h-[90vh] flex flex-col md:flex-row items-center pt-24 relative">
+    <section ref={ref} id="home" className="min-h-[90vh] flex flex-col md:flex-row items-center pt-24 relative">
       
       {/* Left Side Content */}
       <div className="w-full md:w-[55%] z-10 flex flex-col items-start px-4 md:px-0">
@@ -81,18 +84,20 @@ export function BuilderHero() {
 
       {/* Right Side 3D */}
       <div className="w-full md:w-[45%] h-[500px] relative mt-12 md:mt-0">
-        <Canvas camera={{ position: [0, 0, 6], fov: 45 }}>
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[5, 5, 5]} intensity={1} color="#ffffff" />
-          <directionalLight position={[-5, 5, 5]} intensity={0.5} color="#ff6b00" />
-          <Environment preset="city" />
-          
-          <Avatar3D position={[0, -0.5, 0]} />
-          
-          <TechOrb3D position={[2, 1, 0]} color="#61dafb" speed={1.2} radius={2.5} />
-          <TechOrb3D position={[-2, 0, 0]} color="#f7df1e" speed={0.8} radius={3} />
-          <TechOrb3D position={[1, -1, 0]} color="#3178c6" speed={1.5} radius={2.2} />
-        </Canvas>
+        {inView && (
+          <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 6], fov: 45 }}>
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[5, 5, 5]} intensity={1} color="#ffffff" />
+            <directionalLight position={[-5, 5, 5]} intensity={0.5} color="#ff6b00" />
+            <Environment preset="city" />
+            
+            <Avatar3D position={[0, -0.5, 0]} />
+            
+            <TechOrb3D position={[2, 1, 0]} color="#61dafb" speed={1.2} radius={2.5} />
+            <TechOrb3D position={[-2, 0, 0]} color="#f7df1e" speed={0.8} radius={3} />
+            <TechOrb3D position={[1, -1, 0]} color="#3178c6" speed={1.5} radius={2.2} />
+          </Canvas>
+        )}
 
         {/* Floating CSS Badges */}
         <motion.div 

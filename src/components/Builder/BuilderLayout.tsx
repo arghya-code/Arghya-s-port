@@ -25,7 +25,7 @@ function BackgroundShapes() {
           ]}
           rotation={[Math.random() * Math.PI, Math.random() * Math.PI, 0]}
         >
-          {i % 3 === 0 ? <Icosahedron args={[1, 0]} /> : i % 3 === 1 ? <Torus args={[1, 0.2, 16, 32]} /> : <Box args={[1.5, 1.5, 1.5]} />}
+          {i % 3 === 0 ? <Icosahedron args={[1, 0]} /> : i % 3 === 1 ? <Torus args={[1, 0.2, 8, 16]} /> : <Box args={[1.5, 1.5, 1.5]} />}
           <meshStandardMaterial color="#0d1117" wireframe={Math.random() > 0.5} opacity={0.3} transparent />
         </mesh>
       ))}
@@ -41,7 +41,7 @@ export function BuilderLayout() {
         
         {/* Background Canvas */}
         <div className="fixed inset-0 z-0 pointer-events-none">
-          <Canvas camera={{ position: [0, 0, 15] }}>
+          <Canvas camera={{ position: [0, 0, 15] }} dpr={1} gl={{ antialias: false, powerPreference: "high-performance" }}>
             <BackgroundShapes />
           </Canvas>
         </div>

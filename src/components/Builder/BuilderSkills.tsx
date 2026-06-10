@@ -8,7 +8,7 @@ import { useInView } from 'react-intersection-observer';
 
 function SkillBarChart({ categorySkills, inView }: { categorySkills: typeof skills, inView: boolean }) {
   return (
-    <Canvas camera={{ position: [0, 5, 10], fov: 40 }}>
+    <Canvas dpr={[1, 1.5]} camera={{ position: [0, 5, 10], fov: 40 }}>
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} intensity={1} color="#ff6b00" />
       <group position={[-((categorySkills.length - 1) * 1.5) / 2, -2, 0]}>
@@ -29,6 +29,7 @@ export function BuilderSkills() {
   
   const filteredSkills = skills.filter(s => s.category === activeTab);
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { ref: canvasRef, inView: canvasInView } = useInView({ triggerOnce: false, threshold: 0 });
 
   return (
     <section id="skills" className="py-20" ref={ref}>
@@ -56,8 +57,8 @@ export function BuilderSkills() {
         </div>
 
         {/* 3D Bar Chart Visualizer */}
-        <div className="h-40 w-full mb-8 relative hidden md:block opacity-60">
-           <SkillBarChart categorySkills={filteredSkills} inView={inView} />
+        <div ref={canvasRef} className="h-40 w-full mb-8 relative hidden md:block opacity-60">
+           {canvasInView && <SkillBarChart categorySkills={filteredSkills} inView={inView} />}
         </div>
 
         {/* Skills Grid */}

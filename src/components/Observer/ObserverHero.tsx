@@ -19,7 +19,7 @@ export function ObserverHero() {
 
       {/* 3D Camera Scene */}
       <div className="absolute top-20 right-0 w-full md:w-2/3 h-full z-10 pointer-events-none opacity-60 md:opacity-100">
-        <Canvas camera={{ position: [0, 0, 8], fov: 35 }}>
+        <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 8], fov: 35 }}>
           <ambientLight intensity={0.2} />
           <spotLight position={[5, 10, 5]} angle={0.3} penumbra={1} intensity={2} color="#c9a227" castShadow />
           <Environment preset="studio" />

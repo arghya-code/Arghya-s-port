@@ -7,10 +7,13 @@ import { Environment } from '@react-three/drei';
 import { Github, Linkedin, Twitter, Heart } from 'lucide-react';
 import { owner } from '../../data/portfolioData';
 import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 export function BuilderContact() {
+  const { ref, inView } = useInView({ triggerOnce: false, threshold: 0.1 });
+
   return (
-    <section id="contact" className="py-20">
+    <section id="contact" className="py-20" ref={ref}>
       <SectionReveal>
         <div className="bg-[#161b27] border border-white/5 rounded-3xl p-8 lg:p-12">
           <div className="flex flex-col lg:flex-row gap-12">
@@ -20,12 +23,14 @@ export function BuilderContact() {
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,107,0,0.15)_0%,transparent_70%)]" />
               
               <div className="h-64 w-full relative z-10">
-                <Canvas camera={{ position: [0, 0, 5], fov: 40 }}>
-                  <ambientLight intensity={0.5} />
-                  <directionalLight position={[5, 5, 5]} intensity={1} />
-                  <Environment preset="city" />
-                  <Avatar3D position={[0, -1, 0]} scale={0.8} />
-                </Canvas>
+                {inView && (
+                  <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 5], fov: 40 }}>
+                    <ambientLight intensity={0.5} />
+                    <directionalLight position={[5, 5, 5]} intensity={1} />
+                    <Environment preset="city" />
+                    <Avatar3D position={[0, -1, 0]} scale={0.8} />
+                  </Canvas>
+                )}
                 
                 {/* Floating message bubbles */}
                 <motion.div 
